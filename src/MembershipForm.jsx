@@ -1,159 +1,89 @@
+// src/MembershipForm.jsx
+
 import { useState } from "react";
 
 const MembershipForm = ({ paket, harga, onClose }) => {
+  // --- STATE BARU ---
+  const [step, setStep] = useState(1); // 1: Isi Form, 2: Konfirmasi & Upload, 3: Selesai
   const [formData, setFormData] = useState({
     nama: "",
     discordUsername: "",
     whatsapp: "",
-    metodePembayaran: "bank_transfer",
   });
+  const [buktiTransfer, setBuktiTransfer] = useState(null); // State untuk file gambar
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // --- FUNGSI BARU UNTUK HANDLE UPLOAD FILE ---
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Simpan gambar sebagai Base64
+        setBuktiTransfer(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setError(null); // Hapus error jika file valid
+    } else {
+      setBuktiTransfer(null);
+      setError("Harap pilih file gambar yang valid (PNG, JPG, dll).");
+    }
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // --- FUNGSI DIUBAH ---
+  // Langkah 1: Validasi form dan lanjut ke langkah 2
+  const handleNextStep = (e) => {
     e.preventDefault();
+    // Validasi sederhana
+    if (!formData.nama || !formData.discordUsername || !formData.whatsapp) {
+      setError("Harap isi semua kolom yang wajib diisi.");
+      return;
+    }
+    setError(null);
+    setStep(2); // Pindah ke halaman konfirmasi
+  };
+
+  // Langkah 2: Kirim semua data (termasuk gambar) ke Google Sheet
+  const handleSubmit = async () => {
+    if (!buktiTransfer) {
+      setError("Harap upload bukti transfer sebelum melanjutkan.");
+      return;
+    }
     setIsSubmitting(true);
     setError(null);
 
-    // Create the complete data object including the package info
     const completeData = {
       ...formData,
-      Paket: paket, // Updated to match the keys used in the Google Apps Script
-      Harga: harga, // Updated to match the keys used in the Google Apps Script
+      Paket: paket,
+      Harga: harga,
+      metodePembayaran: "bank_transfer",
       waktuDaftar: new Date().toISOString(),
+      buktiTransfer: buktiTransfer, // Kirim gambar Base64
     };
 
     try {
-      // Submit to Google Sheets with the improved function
       await submitToGoogleSheets(completeData);
-
-      // Show the confirmation section
-      setShowConfirmation(true);
-      setIsSubmitting(false);
+      setStep(3); // Pindah ke halaman sukses
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
+    } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handle confirmation of payment
-  const handleConfirmPayment = () => {
-    setSubmitSuccess(true);
-
-    // Create WhatsApp link with template message
-    const waLink = `https://wa.me/6282266330863?text=Halo%20admin,%20saya%20${encodeURIComponent(
-      formData.nama
-    )}%20dengan%20username%20Discord%20${encodeURIComponent(
-      formData.discordUsername
-    )}%20sudah%20mengisi%20form%20untuk%20paket%20${encodeURIComponent(
-      paket
-    )}%20dan%20sudah%20melakukan%20pembayaran.%20Mohon%20konfirmasi,%20terima%20kasih.`;
-
-    // Redirect to WhatsApp
-    window.location.href = waLink;
-  };
-
-  // Payment instructions based on selected method
-  const renderPaymentInstructions = () => {
-    if (formData.metodePembayaran === "bank_transfer") {
-      return (
-        <div className="p-4 bg-gray-800 rounded-lg mt-4">
-          <h4 className="font-bold text-yellow-500 mb-2">Transfer Bank</h4>
-          <p className="text-gray-300">Bank BRI: 212201007724500</p>
-          <p className="text-gray-300">Atas Nama: A.A Ngurah Agung, SE</p>
-          <p className="text-gray-300 mt-2">
-            Nominal: Rp {harga.toLocaleString()}
-          </p>
-        </div>
-      );
-    } else {
-      return (
-        <div className="p-4 bg-gray-800 rounded-lg mt-4">
-          <h4 className="font-bold text-yellow-500 mb-2">QRIS</h4>
-          <div className="flex justify-center my-3">
-            <img
-              src="/qris-placeholder.png"
-              alt="QRIS Code"
-              className="w-48 h-48 bg-white p-2 rounded-lg"
-            />
-          </div>
-          <p className="text-gray-300 text-center">
-            Scan QRIS di atas untuk pembayaran
-          </p>
-          <p className="text-gray-300 text-center mt-2">
-            Nominal: Rp {harga.toLocaleString()}
-          </p>
-        </div>
-      );
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 rounded-xl border border-yellow-900/30 max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        {submitSuccess ? (
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-white"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">
-              Pembayaran Dikonfirmasi!
-            </h3>
-            <p className="text-gray-300 mb-4">
-              Anda akan dialihkan ke WhatsApp untuk menghubungi admin.
-            </p>
-          </div>
-        ) : showConfirmation ? (
-          <div className="p-8">
-            <h3 className="text-2xl font-bold text-yellow-500 mb-4 text-center">
-              Konfirmasi Pembayaran
-            </h3>
-            <p className="text-gray-300 mb-6 text-center">
-              Silakan lakukan pembayaran sesuai instruksi berikut:
-            </p>
-
-            {renderPaymentInstructions()}
-
-            <div className="mt-8">
-              <button
-                onClick={handleConfirmPayment}
-                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all duration-300"
-              >
-                Saya Sudah Bayar
-              </button>
-              <button
-                onClick={onClose}
-                className="w-full py-3 bg-transparent hover:bg-gray-800 text-gray-400 rounded-lg font-medium transition-all duration-300 mt-3"
-              >
-                Batalkan
-              </button>
-            </div>
-          </div>
-        ) : (
+  // Komponen UI untuk setiap langkah
+  const renderStep = () => {
+    switch (step) {
+      // --- TAMPILAN LANGKAH 1: ISI FORM ---
+      case 1:
+        return (
           <div className="p-8">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-yellow-500">
@@ -164,7 +94,6 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                 className="text-gray-400 hover:text-white"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -179,7 +108,6 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                 </svg>
               </button>
             </div>
-
             <div className="bg-yellow-500/20 rounded-lg p-4 mb-6">
               <div className="flex justify-between">
                 <span className="text-gray-300">Paket:</span>
@@ -192,9 +120,9 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                 </span>
               </div>
             </div>
-
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleNextStep}>
               <div className="space-y-4">
+                {/* Input Nama, Discord, WhatsApp */}
                 <div>
                   <label className="block text-gray-300 mb-1">
                     Nama Lengkap
@@ -208,7 +136,6 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   />
                 </div>
-
                 <div>
                   <label className="block text-gray-300 mb-1">
                     Username Discord
@@ -223,7 +150,6 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                     placeholder="contoh: username#1234"
                   />
                 </div>
-
                 <div>
                   <label className="block text-gray-300 mb-1">
                     Nomor WhatsApp
@@ -238,73 +164,150 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                     placeholder="Contoh: 08123456789"
                   />
                 </div>
-
-                <div>
-                  <label className="block text-gray-300 mb-1">
-                    Metode Pembayaran
-                  </label>
-                  <select
-                    name="metodePembayaran"
-                    value={formData.metodePembayaran}
-                    onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    <option value="bank_transfer">Transfer Bank</option>
-                  </select>
-                </div>
               </div>
-
               {error && (
                 <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg text-red-200">
                   {error}
                 </div>
               )}
-
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full py-3 mt-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-bold transition-all duration-300 ${
-                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                }`}
-                style={{
-                  boxShadow: "0 0 15px rgba(255, 193, 7, 0.5)",
-                }}
+                className="w-full py-3 mt-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-bold transition-all duration-300"
+                style={{ boxShadow: "0 0 15px rgba(255, 193, 7, 0.5)" }}
               >
-                {isSubmitting ? "Memproses..." : "Lanjutkan ke Pembayaran"}
+                Lanjutkan ke Pembayaran
               </button>
             </form>
           </div>
-        )}
+        );
+
+      // --- TAMPILAN LANGKAH 2: KONFIRMASI & UPLOAD BUKTI ---
+      case 2:
+        return (
+          <div className="p-8">
+            <h3 className="text-2xl font-bold text-yellow-500 mb-4 text-center">
+              Konfirmasi Pembayaran
+            </h3>
+            <p className="text-gray-300 mb-6 text-center">
+              Silakan lakukan pembayaran dan upload bukti transfer di bawah ini:
+            </p>
+            <div className="p-4 bg-gray-800 rounded-lg mt-4">
+              <h4 className="font-bold text-yellow-500 mb-2">Transfer Bank</h4>
+              <p className="text-gray-300">Bank BRI: 212201007724500</p>
+              <p className="text-gray-300">Atas Nama: A.A Ngurah Agung, SE</p>
+              <p className="text-gray-300 mt-2">
+                Nominal: Rp {harga.toLocaleString()}
+              </p>
+            </div>
+
+            {/* Input untuk Upload File */}
+            <div className="mt-6">
+              <label className="block text-gray-300 mb-2 font-medium">
+                Upload Bukti Transfer
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-500/20 file:text-yellow-300 hover:file:bg-yellow-500/30"
+              />
+              {buktiTransfer && (
+                <img
+                  src={buktiTransfer}
+                  alt="Preview Bukti Transfer"
+                  className="mt-4 rounded-lg max-h-48 mx-auto"
+                />
+              )}
+            </div>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg text-red-200">
+                {error}
+              </div>
+            )}
+
+            <div className="mt-8">
+              <button
+                onClick={handleSubmit}
+                disabled={!buktiTransfer || isSubmitting}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Mengirim..." : "Saya Sudah Bayar"}
+              </button>
+              <button
+                onClick={() => setStep(1)}
+                className="w-full py-3 bg-transparent hover:bg-gray-800 text-gray-400 rounded-lg font-medium mt-3"
+              >
+                Kembali
+              </button>
+            </div>
+          </div>
+        );
+
+      // --- TAMPILAN LANGKAH 3: SELESAI ---
+      case 3:
+        return (
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg
+                className="h-10 w-10 text-white"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              Terima Kasih!
+            </h3>
+            <p className="text-gray-300 mb-6">
+              Formulir pendaftaranmu telah terkirim. Mohon tunggu, pembayaran
+              akan segera dikonfirmasi oleh admin BitAcademy dalam waktu kurang
+              dari 24 jam.
+            </p>
+            <button
+              onClick={onClose}
+              className="py-2 px-6 bg-yellow-500 text-black rounded-lg font-bold"
+            >
+              Tutup
+            </button>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-900 rounded-xl border border-yellow-900/30 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        {renderStep()}
       </div>
     </div>
   );
 };
 
-export default MembershipForm;
-
+// Fungsi submitToGoogleSheets tidak perlu diubah
 async function submitToGoogleSheets(data) {
-  // GANTI DENGAN URL WEB APP YANG SUDAH KAMU SALIN TADI
   const scriptURL =
     "https://script.google.com/macros/s/AKfycbz5GRPQDFsAI3a-kIbE2dXzeupV7INLFDhKhILqC0zYA10aj7mdEfzxo1H_HvEpCCug/exec";
-
   try {
-    console.log("Mengirim data ke Google Sheets:", data);
-
     const response = await fetch(scriptURL, {
       method: "POST",
-      mode: "no-cors", // Penting untuk menghindari error CORS saat development
-      headers: {
-        "Content-Type": "application/json",
-      },
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-
-    // Karena mode 'no-cors', kita tidak bisa membaca response dari server.
-    // Kita asumsikan pengiriman berhasil jika tidak ada error network.
-    console.log("Data berhasil dikirim (asumsi sukses karena no-cors).");
-    return { result: "success" }; // Kembalikan objek sukses palsu
+    return { result: "success" };
   } catch (error) {
-    console.error("Error saat mengirim ke Google Sheets:", error);
+    console.error("Error submitting to Google Sheets:", error);
     throw error;
   }
 }
+
+export default MembershipForm;
