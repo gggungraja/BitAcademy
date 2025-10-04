@@ -60,8 +60,7 @@ function App() {
             <img
               src="/logo.webp"
               alt="Bit Academy Logo"
-              // Ubah h-12 kembali ke h-10 atau h-9 untuk ukuran lebih kecil
-              className="h-10 w-auto pr-3" // <-- Diubah dari h-12 menjadi h-10
+              className="h-10 w-auto pr-3"
             />
           </div>
           <a

@@ -16,12 +16,11 @@ const MembershipSection = () => {
     triggerOnce: true,
   });
 
-  // Define the packages and their prices
+  // --- HARGA DIPERBARUI DI SINI ---
   const packages = {
-    "1 Bulan": 149000,
-    "3 Bulan": 349000,
-    "6 Bulan": 599000,
-    "1 Tahun": 999000,
+    "1 Bulan": 250000,
+    "3 Bulan": 700000,
+    "6 Bulan": 1200000,
   };
 
   // Animate elements when they come into view
@@ -195,9 +194,9 @@ const MembershipSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Pricing Cards Container */}
+          {/* --- BAGIAN KARTU HARGA DIPERBARUI DI SINI --- */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8" // Diubah menjadi 3 kolom
             variants={containerVariants}
             initial="hidden"
             animate={controls}
@@ -223,24 +222,13 @@ const MembershipSection = () => {
                   1 Bulan
                 </h3>
                 <div className="mt-4 text-center">
-                  <p className="text-red-500 line-through text-lg">Rp250.000</p>
+                  <p className="text-red-500 line-through text-lg">Rp350.000</p>
                   <motion.p
                     className="text-3xl font-bold text-white mt-1"
                     whileHover={{ scale: 1.05 }}
                   >
-                    Rp149.000
+                    Rp250.000
                   </motion.p>
-                  <motion.div
-                    className="bg-red-600 text-white text-sm font-bold py-1 px-3 rounded-full inline-block mt-2"
-                    initial={{ rotate: -5 }}
-                    whileHover={{
-                      rotate: 0,
-                      scale: 1.1,
-                      transition: { duration: 0.2, yoyo: Infinity },
-                    }}
-                  >
-                    40% DISC
-                  </motion.div>
                 </div>
                 <div className="mt-6">
                   <motion.button
@@ -258,11 +246,11 @@ const MembershipSection = () => {
               </div>
             </motion.div>
 
-            {/* 3 Bulan Card */}
+            {/* 3 Bulan Card (BEST VALUE) */}
             <motion.div
-              className={`bg-black bg-opacity-60 border border-[#4b412a] rounded-xl overflow-hidden transition-all duration-300 ${
+              className={`bg-gradient-to-b from-yellow-600 to-yellow-500 border border-yellow-400 rounded-xl overflow-hidden transition-all duration-300 relative ${
                 hoverCard === "3 Bulan"
-                  ? "shadow-lg shadow-yellow-900/30 border-yellow-900/30"
+                  ? "shadow-lg shadow-yellow-500/50 border-yellow-300"
                   : ""
               }`}
               variants={itemVariants}
@@ -274,36 +262,30 @@ const MembershipSection = () => {
               onHoverStart={() => setHoverCard("3 Bulan")}
               onHoverEnd={() => setHoverCard(null)}
             >
+              <motion.div className="absolute -right-12 top-5 rotate-45 bg-red-600 text-white text-xs font-bold py-1 px-12">
+                BEST VALUE
+              </motion.div>
               <div className="p-6">
                 <h3 className="text-2xl font-bold text-center text-white">
                   3 Bulan
                 </h3>
                 <div className="mt-4 text-center">
-                  <p className="text-red-500 line-through text-lg">Rp777.000</p>
+                  <p className="text-gray-300 line-through text-lg">
+                    Rp950.000
+                  </p>
                   <motion.p
                     className="text-3xl font-bold text-white mt-1"
                     whileHover={{ scale: 1.05 }}
                   >
-                    Rp349.000
+                    Rp700.000
                   </motion.p>
-                  <motion.div
-                    className="bg-red-600 text-white text-sm font-bold py-1 px-3 rounded-full inline-block mt-2"
-                    initial={{ rotate: -5 }}
-                    whileHover={{
-                      rotate: 0,
-                      scale: 1.1,
-                      transition: { duration: 0.2, yoyo: Infinity },
-                    }}
-                  >
-                    55% DISC
-                  </motion.div>
                 </div>
                 <div className="mt-6">
                   <motion.button
                     onClick={() => handleGabungClick("3 Bulan")}
-                    className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-bold transition-all duration-300"
+                    className="w-full py-3 bg-white hover:bg-gray-200 text-yellow-600 rounded-lg font-bold transition-all duration-300"
                     style={{
-                      boxShadow: "0 0 15px rgba(255, 193, 7, 0.5)",
+                      boxShadow: "0 0 15px rgba(255, 255, 255, 0.5)",
                     }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -336,25 +318,14 @@ const MembershipSection = () => {
                 </h3>
                 <div className="mt-4 text-center">
                   <p className="text-red-500 line-through text-lg">
-                    Rp1.554.000
+                    Rp1.800.000
                   </p>
                   <motion.p
                     className="text-3xl font-bold text-white mt-1"
                     whileHover={{ scale: 1.05 }}
                   >
-                    Rp599.000
+                    Rp1.200.000
                   </motion.p>
-                  <motion.div
-                    className="bg-red-600 text-white text-sm font-bold py-1 px-3 rounded-full inline-block mt-2"
-                    initial={{ rotate: -5 }}
-                    whileHover={{
-                      rotate: 0,
-                      scale: 1.1,
-                      transition: { duration: 0.2, yoyo: Infinity },
-                    }}
-                  >
-                    60% DISC
-                  </motion.div>
                 </div>
                 <div className="mt-6">
                   <motion.button
@@ -362,77 +333,6 @@ const MembershipSection = () => {
                     className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-bold transition-all duration-300"
                     style={{
                       boxShadow: "0 0 15px rgba(255, 193, 7, 0.5)",
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Gabung Member
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* 1 Tahun Card - Best Value */}
-            <motion.div
-              className={`bg-gradient-to-b from-yellow-600 to-yellow-500 border border-yellow-400 rounded-xl overflow-hidden transition-all duration-300 relative ${
-                hoverCard === "1 Tahun"
-                  ? "shadow-lg shadow-yellow-500/50 border-yellow-300"
-                  : ""
-              }`}
-              variants={itemVariants}
-              whileHover={{
-                y: -10,
-                scale: 1.03,
-                transition: { duration: 0.2 },
-              }}
-              onHoverStart={() => setHoverCard("1 Tahun")}
-              onHoverEnd={() => setHoverCard(null)}
-            >
-              <motion.div
-                className="absolute -right-12 top-5 rotate-45 bg-red-600 text-white text-xs font-bold py-1 px-12"
-                animate={{
-                  backgroundColor: ["#dc2626", "#ef4444", "#dc2626"],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                BEST VALUE
-              </motion.div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-center text-white">
-                  1 Tahun
-                </h3>
-                <div className="mt-4 text-center">
-                  <p className="text-gray-300 line-through text-lg">
-                    Rp3.108.000
-                  </p>
-                  <motion.p
-                    className="text-3xl font-bold text-white mt-1"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    Rp999.000
-                  </motion.p>
-                  <motion.div
-                    className="bg-red-600 text-white text-sm font-bold py-1 px-3 rounded-full inline-block mt-2"
-                    initial={{ rotate: -5 }}
-                    whileHover={{
-                      rotate: 0,
-                      scale: 1.1,
-                      transition: { duration: 0.2, yoyo: Infinity },
-                    }}
-                  >
-                    70% DISC
-                  </motion.div>
-                </div>
-                <div className="mt-6">
-                  <motion.button
-                    onClick={() => handleGabungClick("1 Tahun")}
-                    className="w-full py-3 bg-white hover:bg-gray-200 text-yellow-600 rounded-lg font-bold transition-all duration-300"
-                    style={{
-                      boxShadow: "0 0 15px rgba(255, 255, 255, 0.5)",
                     }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

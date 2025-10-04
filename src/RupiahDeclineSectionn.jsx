@@ -164,6 +164,15 @@ const RupiahDeclineSection = () => {
           </span>
         </motion.h2>
 
+        {/* --- TEKS BARU DITAMBAHKAN DI SINI --- */}
+        <motion.p
+          variants={itemVariants}
+          className="mt-4 text-base text-gray-400 max-w-2xl mx-auto"
+        >
+          Visualisasi data di bawah ini menunjukkan bagaimana nilai Dolar AS
+          (USD) terus melambung tinggi terhadap Rupiah (IDR) dari masa ke masa.
+        </motion.p>
+
         <motion.div
           variants={itemVariants}
           className="mt-12 flex flex-col md:flex-row md:items-center"
@@ -173,7 +182,6 @@ const RupiahDeclineSection = () => {
               className="w-full h-full"
               style={{ filter: "drop-shadow(0 0 8px rgba(255, 193, 7, 0.5))" }}
             >
-              {/* Gunakan data dari state untuk memicu animasi */}
               <Line options={chartOptions} data={chartData} />
             </div>
           </div>

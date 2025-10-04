@@ -72,8 +72,8 @@ const MembershipForm = ({ paket, harga, onClose }) => {
       return (
         <div className="p-4 bg-gray-800 rounded-lg mt-4">
           <h4 className="font-bold text-yellow-500 mb-2">Transfer Bank</h4>
-          <p className="text-gray-300">Bank BCA: 1234567890</p>
-          <p className="text-gray-300">Atas Nama: PT Bit Academy</p>
+          <p className="text-gray-300">Bank BRI: 212201007724500</p>
+          <p className="text-gray-300">Atas Nama: A.A Ngurah Agung, SE</p>
           <p className="text-gray-300 mt-2">
             Nominal: Rp {harga.toLocaleString()}
           </p>
@@ -250,7 +250,6 @@ const MembershipForm = ({ paket, harga, onClose }) => {
                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   >
                     <option value="bank_transfer">Transfer Bank</option>
-                    <option value="qris">QRIS</option>
                   </select>
                 </div>
               </div>

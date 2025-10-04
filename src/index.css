@@ -87,6 +87,7 @@ html {
   background-color: #0f0e0a; /* Slightly warmer dark background */
   color: white;
   font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
 }
 
 #root {
