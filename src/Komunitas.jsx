@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import communityImage from './assets/komunitas.webp'; 
 
 const CommunitySection = () => {
   // Animation variants
@@ -290,7 +291,7 @@ const CommunitySection = () => {
               animate="animate"
             >
               <img
-                src="/komunitas.webp"
+                src={communityImage}
                 alt="Ilustrasi Komunitas"
                 className="w-full h-auto object-contain mx-auto drop-shadow-[0_5px_15px_rgba(255,165,0,0.25)]"
               />

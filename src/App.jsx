@@ -13,6 +13,7 @@ import HeadlineSection from "./HeadlineSection";
 import RupiahDeclineSection from "./RupiahDeclineSectionn";
 import Coinpick from "./Coinpick";
 import Testimoni from "./Testimoni";
+import Logo from "./assets/logo.webp";
 
 // DATA FAQS DIPINDAHKAN KE LUAR KOMPONEN UNTUK PERFORMA LEBIH BAIK
 const faqs = [
@@ -57,11 +58,13 @@ function App() {
       >
         <div className="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
           <div className="flex items-center">
-            <img
-              src="/logo.webp"
-              alt="Bit Academy Logo"
-              className="h-10 w-auto pr-3"
-            />
+            <a href="/" className="flex items-center flex-shrink-0">
+              <img
+                src={Logo}
+                alt="Bit Academy Logo"
+                className="h-10 w-auto pr-3"
+              />
+            </a>
           </div>
           <a
             href="#daftar"

@@ -1,6 +1,10 @@
 // src/Coinpick.jsx
 
 import { motion } from "framer-motion";
+import coinpick1 from "./assets/coinpick1.webp";
+import coinpick2 from "./assets/coinpick2.webp";
+import coinpick3 from "./assets/coinpick3.webp";
+import coinpick4 from "./assets/coinpick4.webp";
 
 const Coinpick = () => {
   // Animation variants
@@ -51,10 +55,10 @@ const Coinpick = () => {
 
   // Data gambar Coinpick
   const coinpickImages = [
-    { src: "/coinpick2.webp", alt: "Coinpick Bit Academy Edisi #1" },
-    { src: "/coinpick1.webp", alt: "Coinpick Bit Academy Edisi #2" },
-    { src: "/coinpick3.webp", alt: "Coinpick Bit Academy Edisi #3" },
-    { src: "/coinpick4.webp", alt: "Coinpick Bit Academy Edisi #4" },
+    { src: coinpick2, alt: "Coinpick Bit Academy Edisi #1" },
+    { src: coinpick1, alt: "Coinpick Bit Academy Edisi #2" },
+    { src: coinpick3, alt: "Coinpick Bit Academy Edisi #3" },
+    { src: coinpick4, alt: "Coinpick Bit Academy Edisi #4" },
   ];
 
   return (

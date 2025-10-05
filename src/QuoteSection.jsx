@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
+import quoteImage from './assets/quote.webp';
+
 const QuoteSection = () => {
   // Hook untuk mendeteksi saat section masuk ke layar
   const ref = useRef(null);
@@ -28,7 +30,7 @@ const QuoteSection = () => {
       <div className="w-full max-w-4xl">
         {/* Ubah <img> menjadi <motion.img> dan tambahkan properti animasi */}
         <motion.img
-          src="/quote.webp"
+          src={quoteImage}
           alt="Quote from Bit Academy"
           className="w-full h-auto object-contain"
           variants={imageVariants}

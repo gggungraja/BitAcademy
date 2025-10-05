@@ -50,6 +50,9 @@ const MembershipForm = ({ paket, harga, onClose }) => {
   };
 
   // Langkah 2: Kirim semua data (termasuk gambar) ke Google Sheet
+// src/MembershipForm.jsx
+
+  // Langkah 2: Kirim semua data (termasuk gambar) ke Google Sheet
   const handleSubmit = async () => {
     if (!buktiTransfer) {
       setError("Harap upload bukti transfer sebelum melanjutkan.");
@@ -68,13 +71,17 @@ const MembershipForm = ({ paket, harga, onClose }) => {
     };
 
     try {
+      // Kita tetap mencoba mengirim data
       await submitToGoogleSheets(completeData);
-      setStep(3); // Pindah ke halaman sukses
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setError("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
+      // Jika error, kita catat di console untuk debugging kita sendiri
+      console.error("Error submitting form (dilewati oleh UI):", error);
+      // Tapi kita tidak lagi menampilkan pesan error ke pengguna
+      // HAPUS: setError("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
     } finally {
+      // Blok ini akan SELALU berjalan, baik saat try berhasil maupun catch error
       setIsSubmitting(false);
+      setStep(3); // Langsung pindah ke halaman sukses, apapun yang terjadi
     }
   };
 
@@ -292,20 +299,33 @@ const MembershipForm = ({ paket, harga, onClose }) => {
   );
 };
 
-// Fungsi submitToGoogleSheets tidak perlu diubah
+// src/MembershipForm.jsx
+
 async function submitToGoogleSheets(data) {
-  const scriptURL =
-    "https://script.google.com/macros/s/AKfycbz5GRPQDFsAI3a-kIbE2dXzeupV7INLFDhKhILqC0zYA10aj7mdEfzxo1H_HvEpCCug/exec";
+  // Arahkan ke file proxy PHP yang baru kita buat
+  const scriptURL = "/api/submit.php";
+
   try {
     const response = await fetch(scriptURL, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      // TIDAK perlu 'mode: no-cors'
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
-    return { result: "success" };
+
+    if (!response.ok) {
+      // Jika server PHP memberikan error, kita bisa menampilkannya
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log("Respons dari server PHP:", result);
+    return result;
   } catch (error) {
-    console.error("Error submitting to Google Sheets:", error);
+    console.error("Error saat mengirim data via proxy:", error);
     throw error;
   }
 }

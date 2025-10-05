@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Logo from './assets/logo.webp';
 
 const Footer = () => {
   const [hoveredSocial, setHoveredSocial] = useState(null);
@@ -97,7 +98,7 @@ const Footer = () => {
           {/* Column 1 - About */}
           <motion.div variants={itemVariants}>
             <div className="flex items-center mb-6">
-              <img src="/logo.webp" alt="Logo" className="h-10 w-auto mr-3" />
+              <img src={Logo} alt="Logo" className="h-10 w-auto mr-3" />
             </div>
             <p className="text-gray-400 mb-6">
               Komunitas premium trading cryptocurrency dengan analisis mendalam

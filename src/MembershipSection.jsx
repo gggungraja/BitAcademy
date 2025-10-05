@@ -3,6 +3,11 @@ import MembershipForm from "./MembershipForm";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+import nft1 from './assets/nft1.webp';
+import nft2 from './assets/nft2.webp';
+import nft3 from './assets/nft3.webp';
+import nft4 from './assets/nft4.webp';
+
 const MembershipSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedPaket, setSelectedPaket] = useState(null);
@@ -169,7 +174,7 @@ const MembershipSection = () => {
               transition={{ delay: 1, duration: 0.5 }}
             >
               <div className="flex -space-x-2">
-                {["/nft1.webp", "/nft2.webp", "/nft3.webp", "/nft4.webp"].map(
+                {[nft1, nft2, nft3, nft4].map(
                   (src, i) => (
                     <motion.img
                       key={i}

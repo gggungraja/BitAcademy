@@ -1,22 +1,19 @@
 // src/Testimoni.jsx
 
-// Tidak perlu lagi impor dari framer-motion atau useRef
+import testi1 from "./assets/testimoni1.webp";
+import testi2 from "./assets/testimoni2.webp";
+import testi3 from "./assets/testimoni3.webp";
+import testi4 from "./assets/testimoni4.webp";
+import testi5 from "./assets/testimoni5.webp";
+import testi6 from "./assets/testimoni6.webp";
+import testi7 from "./assets/testimoni7.webp";
+import testi8 from "./assets/testimoni8.webp";
+import testi9 from "./assets/testimoni9.webp";
 
 const Testimoni = () => {
   // Data testimoni
-  const testimonialsRow1 = [
-    "/testimoni1.webp",
-    "/testimoni2.webp",
-    "/testimoni3.webp",
-    "/testimoni4.webp",
-    "/testimoni5.webp",
-  ];
-  const testimonialsRow2 = [
-    "/testimoni6.webp",
-    "/testimoni7.webp",
-    "/testimoni8.webp",
-    "/testimoni9.webp",
-  ];
+  const testimonialsRow1 = [testi1, testi2, testi3, testi4, testi5];
+  const testimonialsRow2 = [testi6, testi7, testi8, testi9];
 
   // Komponen kecil untuk satu baris marquee
   const MarqueeRow = ({ images, direction }) => (

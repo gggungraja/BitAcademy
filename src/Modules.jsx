@@ -1,6 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+import smcImage from './assets/modul-smc.webp';
+import ctiImage from './assets/modul-cti.webp';
+import cdmImage from './assets/modul-cdm.webp';
+import isImage from './assets/modul-is.webp';
+import irmImage from './assets/modul-irm.webp';
+import frImage from './assets/modul-fr.webp';
+import trImage from './assets/modul-tr.webp';
+import nrImage from './assets/modul-nr.webp';
+
 const ModulesCourse = () => {
   // Data modul pembelajaran
   const courseModules = [
@@ -12,7 +21,7 @@ const ModulesCourse = () => {
         "Modul ini membahas konsep dasar Smart Money, termasuk bagaimana institusi besar menggerakkan pasar dan bagaimana retail trader bisa mengikuti jejak mereka.",
       secondDescription:
         "Kamu akan mempelajari cara membaca struktur pasar, identifikasi likuiditas, dan memahami pergerakan harga dengan presisi tinggi menggunakan pendekatan Smart Money.",
-      image: "/modul-smc.webp",
+      image: smcImage,
     },
     {
       number: "2",
@@ -22,7 +31,7 @@ const ModulesCourse = () => {
         "Modul ini mengajarkan berbagai indikator teknikal penting dalam trading crypto, seperti RSI, MACD, Moving Averages, Bollinger Bands, dan lainnya.",
       secondDescription:
         "Kamu akan belajar kapan dan bagaimana menggunakan indikator tersebut untuk menemukan entry dan exit point yang lebih akurat dalam strategi tradingmu.",
-      image: "/modul-cti.webp",
+      image: ctiImage,
     },
     {
       number: "3",
@@ -32,7 +41,7 @@ const ModulesCourse = () => {
         "Modul ini membahas pasar derivatif crypto seperti futures dan options. Kamu akan mempelajari cara kerja leverage dan margin serta risiko yang terlibat.",
       secondDescription:
         "Kamu juga akan diajarkan strategi trading di pasar derivatif, serta cara menggunakan platform seperti Binance Futures dan Bybit dengan aman dan efektif.",
-      image: "/modul-cdm.webp",
+      image: cdmImage,
     },
     {
       number: "4",
@@ -42,7 +51,7 @@ const ModulesCourse = () => {
         "Pelajari berbagai strategi investasi jangka panjang dan pendek di dunia crypto, termasuk dollar cost averaging, value investing, dan momentum investing.",
       secondDescription:
         "Kamu akan memahami bagaimana memilih aset crypto yang potensial berdasarkan analisa fundamental dan teknikal untuk membangun portofolio yang tahan banting.",
-      image: "/modul-is.webp",
+      image: isImage,
     },
     {
       number: "5",
@@ -52,7 +61,7 @@ const ModulesCourse = () => {
         "Modul ini mengajarkan pentingnya manajemen risiko dalam investasi crypto. Kamu akan mempelajari cara mengelola portofolio dan menetapkan stop loss.",
       secondDescription:
         "Termasuk di dalamnya adalah teknik position sizing, diversifikasi, dan pengelolaan emosi agar Kamu bisa bertahan di pasar yang sangat volatil.",
-      image: "/modul-irm.webp",
+      image: irmImage,
     },
     {
       number: "6",
@@ -62,7 +71,7 @@ const ModulesCourse = () => {
         "Pelajari bagaimana melakukan riset fundamental terhadap proyek crypto: mulai dari whitepaper, tokenomics, tim pengembang, hingga roadmap proyek.",
       secondDescription:
         "Modul ini juga mengajarkan penggunaan tools seperti CoinMarketCap, Token Terminal, dan on-chain analytics untuk evaluasi mendalam.",
-      image: "/modul-fr.webp",
+      image: frImage,
     },
     {
       number: "7",
@@ -72,7 +81,7 @@ const ModulesCourse = () => {
         "Modul ini mengajarkan cara membaca grafik harga, candlestick pattern, support & resistance, serta penggunaan charting tools seperti TradingView.",
       secondDescription:
         "Kamu juga akan belajar teknik analisa lanjutan seperti Fibonacci retracement, breakout strategy, dan trendline analysis.",
-      image: "/modul-tr.webp",
+      image: trImage,
     },
     {
       number: "8",
@@ -82,7 +91,7 @@ const ModulesCourse = () => {
         "Di modul ini, kamu akan belajar mengidentifikasi narasi besar yang sedang atau akan mendorong adopsi crypto, seperti DeFi, NFT, AI, dan Layer 2.",
       secondDescription:
         "Kamu akan mempelajari cara membaca tren makro, social sentiment, serta bagaimana menggunakan narasi untuk memilih aset dengan potensi pertumbuhan tinggi.",
-      image: "/modul-nr.webp",
+      image: nrImage,
     },
   ];
 

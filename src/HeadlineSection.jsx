@@ -1,5 +1,7 @@
 // src/HeadlineSection.jsx
 
+import headlineImage from "./assets/headline.webp"; // <-- 1. Impor gambar di sini
+
 const HeadlineSection = ({ handleScroll }) => {
   return (
     <section className="w-full bg-transparent pt-24" id="beranda">
@@ -20,7 +22,7 @@ const HeadlineSection = ({ handleScroll }) => {
         {/* Main Image */}
         <div className="w-full flex justify-center mt-4 mb-4">
           <img
-            src="/headline.webp"
+            src={headlineImage} // <-- 2. Gunakan variabel hasil impor
             alt="Headline"
             className="w-full max-w-5xl md:max-w-6xl object-contain px-4"
           />

@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
+import modulImage from "./assets/modul.webp";
+import mentorImage from "./assets/mentor.webp";
+import updateImage from "./assets/update.webp";
+
 // CSS untuk animasi
 const animationStyles = `
   @keyframes float {
@@ -81,20 +85,20 @@ const WhyJoinBitAcademy = () => {
     {
       title: "20+ Modul Video Pembelajaran yang Terstruktur",
       text: "Materi trading terlengkap yang tidak akan kamu temukan di tempat lain.",
-      image: "/modul.webp",
+      image: modulImage,
       imageAlt: "Modul Video Pembelajaran",
     },
     {
       title: "Mentor Berpengalaman",
       text: "Berhasil membimbing banyak trader dari pemula hingga sukses menghasilkan profit konsisten.",
-      image: "/mentor.webp",
+      image: mentorImage,
       imageAlt: "Mentor Berpengalaman",
       reverse: true,
     },
     {
       title: "Market Update Rutin",
       text: "Dapatkan update informasi dan riset token crypto berpotensi 2-3x lebih cepat dari pasar.",
-      image: "/update.webp",
+      image: updateImage,
       imageAlt: "Market Update Rutin",
     },
   ];
